@@ -68,5 +68,41 @@ namespace InMemoryCrudOperation.DataAccessLayer
 
             return response;
         }
+
+        public async Task<UserDetailsResponse> UpdateUserDetails(UserDetails request)
+        {
+            UserDetailsResponse response = new UserDetailsResponse();
+            response.Message = "Data Inserted Successfully";
+            response.IsSuccess = true;
+
+            try
+            {
+
+                var Result = await _userDbContext.UserDetails.FindAsync(request.UserID);
+                if (Result == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Something Went Wrong";
+                }
+
+                Result.UserName = request.UserName;
+                Result.InsertionDate = DateTime.Now;
+                Result.Age = request.Age;
+
+                var UpdateResult = await _userDbContext.SaveChangesAsync();
+                if (UpdateResult > 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Something Went Wrong";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+            }
+
+            return response;
+        }
     }
 }

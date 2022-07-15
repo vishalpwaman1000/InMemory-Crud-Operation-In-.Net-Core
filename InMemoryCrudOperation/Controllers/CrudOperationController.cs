@@ -58,5 +58,25 @@ namespace InMemoryCrudOperation.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUserDetails(UserDetails request)
+        {
+            UserDetailsResponse response = new UserDetailsResponse();
+            try
+            {
+
+                response = await _crudOperationDL.UpdateUserDetails(request);
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
     }
 }
