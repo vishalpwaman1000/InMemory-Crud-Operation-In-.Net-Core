@@ -11,5 +11,6 @@ namespace InMemoryCrudOperation.DataAccessLayer
         public Task<UserDetailsResponse> InsertUserDetails(UserDetails request);
         public Task<GetUserDetailsResponse> GetUserDetails(GetUserDetailsRequest request);
         public Task<UserDetailsResponse> UpdateUserDetails(UserDetails request);
+        public Task<UserDetailsResponse> DeleteUserDetails(int UserID);
     }
 }

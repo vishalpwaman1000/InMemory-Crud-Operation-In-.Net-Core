@@ -78,5 +78,24 @@ namespace InMemoryCrudOperation.Controllers
             return Ok(response);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserDetails([FromQuery]int UserID)
+        {
+            UserDetailsResponse response = new UserDetailsResponse();
+            try
+            {
+
+                response = await _crudOperationDL.DeleteUserDetails(UserID);
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
     }
 }

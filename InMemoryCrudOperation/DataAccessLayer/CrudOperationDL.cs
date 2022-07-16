@@ -16,6 +16,39 @@ namespace InMemoryCrudOperation.DataAccessLayer
             _userDbContext = userDbContext;
         }
 
+        public async Task<UserDetailsResponse> DeleteUserDetails(int UserID)
+        {
+            UserDetailsResponse response = new UserDetailsResponse();
+            response.Message = "Data Deleted Successfully";
+            response.IsSuccess = true;
+
+            try
+            {
+                var Result = await _userDbContext.UserDetails.FindAsync(UserID);
+                if (Result == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "UserID Not Found";
+                }
+
+                _userDbContext.UserDetails.Remove(Result);
+                var FinalResult = _userDbContext.SaveChangesAsync();
+                if (FinalResult.Result<=0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Something Went Wrong";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+            }
+
+            return response;
+        }
+
         public async Task<GetUserDetailsResponse> GetUserDetails(GetUserDetailsRequest request)
         {
             GetUserDetailsResponse response = new GetUserDetailsResponse();
@@ -90,7 +123,7 @@ namespace InMemoryCrudOperation.DataAccessLayer
                 Result.Age = request.Age;
 
                 var UpdateResult = await _userDbContext.SaveChangesAsync();
-                if (UpdateResult > 0)
+                if (UpdateResult <= 0)
                 {
                     response.IsSuccess = false;
                     response.Message = "Something Went Wrong";
